@@ -15,6 +15,11 @@ public class GridTile : MonoBehaviour
         this.id = id;
     }
 
+    public int GetId()
+    {
+        return this.id;
+    }
+
 
     private void Awake()
     {

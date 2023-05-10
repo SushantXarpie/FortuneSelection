@@ -46,7 +46,20 @@ public class GridManager : MonoBehaviour
 
     private void OnTileSelected(int x)
     {
-        Debug.Log("Clicked " + tiles[x].name);
-        selectedText.text = $"Selected {tiles[x].name}";
+        Debug.Log("Clicked " + tiles[x].GetComponent<GridTile>().GetId() + 1);
+        selectedText.text = $"{GameManager.Instance.Name} Selected Box {tiles[x].GetComponent<GridTile>().GetId() + 1}";
+        selectedText.gameObject.SetActive(true);
+        selectedText.GetComponent<Animator>().Play("Move_Animation");
+        StartCoroutine(HideSelectedText());
+        foreach (var tile in tiles)
+        {
+            tile.GetComponent<Button>().interactable = false;
+        }
+    }
+
+    private IEnumerator HideSelectedText()
+    {
+        yield return new WaitForSeconds(1.5f);
+        selectedText.gameObject.SetActive(false);
     }
 }
