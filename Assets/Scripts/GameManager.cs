@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ShowWarningText());
             return;
         }
-        if (nameInput.text.Length > 5)
+        if (nameInput.text.Length < 5)
         {
             Debug.Log("Name is too long");
             StartCoroutine(ShowWarningText_2());
