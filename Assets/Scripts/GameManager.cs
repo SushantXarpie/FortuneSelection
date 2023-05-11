@@ -37,25 +37,35 @@ public class GameManager : MonoBehaviour
 
     private void OnStartButtonClicked()
     {
-        if(String.IsNullOrEmpty( nameInput.text))
+        if (String.IsNullOrEmpty(nameInput.text))
         {
             Debug.Log("Please enter a name");
             StartCoroutine(ShowWarningText());
             return;
         }
+        if (nameInput.text.Length > 5)
+        {
+            Debug.Log("Name is too long");
+            StartCoroutine(ShowWarningText_2());
+            return;
+        }
         Name = nameInput.text;
+        DatabaseManager.Instance.InsertToDB(Name);
         SceneManager.LoadScene("Game");
     }
 
     private IEnumerator ShowWarningText()
     {
+        warningText.text = "Please enter a name";
         warningText.gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         warningText.gameObject.SetActive(false);
     }
-
-    void Update()
+    private IEnumerator ShowWarningText_2()
     {
-
+        warningText.text = "Name is too short";
+        warningText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        warningText.gameObject.SetActive(false);
     }
 }
