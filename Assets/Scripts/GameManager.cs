@@ -11,10 +11,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    [HideInInspector] public string Name;
+    [HideInInspector] public string EmpId;
 
-    [SerializeField] private TMP_InputField nameInput;
-    [SerializeField] private Button startButton;
+    [SerializeField] private TMP_InputField IdInput;
+    [SerializeField] private Button startGridButton;
+    [SerializeField] private Button startWheelButton;
     [SerializeField] private TextMeshProUGUI warningText;
 
     private void Awake()
@@ -32,40 +33,52 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        startButton.onClick.AddListener(OnStartButtonClicked);
+        startGridButton.onClick.AddListener(OnGridStartButtonClicked);
+        startWheelButton.onClick.AddListener(OnWheelStartButtonClicked);
+
     }
 
-    private void OnStartButtonClicked()
+    private void OnWheelStartButtonClicked()
     {
-        if (String.IsNullOrEmpty(nameInput.text))
-        {
-            Debug.Log("Please enter a name");
-            StartCoroutine(ShowWarningText());
-            return;
-        }
-        if (nameInput.text.Length < 5)
-        {
-            Debug.Log("Name is too long");
-            StartCoroutine(ShowWarningText_2());
-            return;
-        }
-        Name = nameInput.text;
-        DatabaseManager.Instance.InsertToDB(Name);
+        ValidateInput();
+        SceneManager.LoadScene("Wheel");
+    }
+
+    private void OnGridStartButtonClicked()
+    {
+        ValidateInput();
         SceneManager.LoadScene("Game");
     }
 
     private IEnumerator ShowWarningText()
     {
-        warningText.text = "Please enter a name";
+        warningText.text = "Please enter your Id";
         warningText.gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         warningText.gameObject.SetActive(false);
     }
     private IEnumerator ShowWarningText_2()
     {
-        warningText.text = "Name is too short";
+        warningText.text = "Id is not correct";
         warningText.gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         warningText.gameObject.SetActive(false);
+    }
+
+    private void ValidateInput()
+    {
+        if (String.IsNullOrEmpty(IdInput.text))
+        {
+            Debug.Log("Please enter a name");
+            StartCoroutine(ShowWarningText());
+            return;
+        }
+        if (IdInput.text.Length < 5)
+        {
+            Debug.Log("Name is too short");
+            StartCoroutine(ShowWarningText_2());
+            return;
+        }
+        EmpId = IdInput.text;
     }
 }
