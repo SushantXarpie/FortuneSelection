@@ -26,8 +26,9 @@ public class DatabaseManager : MonoBehaviour
 
     void Start()
     {
-        string filePath = "Assets/Resources/EMPData.csv";
-        string[] lines = File.ReadAllLines(filePath);
+        TextAsset data = Resources.Load("EMPData") as TextAsset;
+        string[] lines = data.text.Split('\n');
+        // string[] lines = File.ReadAllLines(filePath);
 
         // Loop through each line in the CSV file
         for (int i = 1; i < lines.Length; i++)
