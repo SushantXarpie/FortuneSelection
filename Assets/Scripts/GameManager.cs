@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void OnWheelStartButtonClicked()
     {
-        if(!ValidateInput()) return;
+        if (!ValidateInput()) return;
         // if (String.IsNullOrEmpty(IdInput.text))
         // {
         //     Debug.Log("Please enter a name");
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void OnGridStartButtonClicked()
     {
-        if(!ValidateInput()) return;
+        if (!ValidateInput()) return;
         // if (String.IsNullOrEmpty(IdInput.text))
         // {
         //     Debug.Log("Please enter a name");
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ShowWarningText());
             return false;
         }
-        if (IdInput.text.Length < 5)
+        if (IsValidID(IdInput.text))
         {
             Debug.Log("Name is too short");
             StartCoroutine(ShowWarningText_2());
@@ -107,5 +107,17 @@ public class GameManager : MonoBehaviour
         }
         EmpId = IdInput.text;
         return true;
+    }
+
+    private bool IsValidID(string Id)
+    {
+        foreach (Emp e in DatabaseManager.Instance.empList)
+        {
+            if (e.empId == Id)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
