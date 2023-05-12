@@ -40,39 +40,39 @@ public class GameManager : MonoBehaviour
 
     private void OnWheelStartButtonClicked()
     {
-        // ValidateInput();
-        if (String.IsNullOrEmpty(IdInput.text))
-        {
-            Debug.Log("Please enter a name");
-            StartCoroutine(ShowWarningText());
-            return;
-        }
-        if (IdInput.text.Length < 5)
-        {
-            Debug.Log("Name is too short");
-            StartCoroutine(ShowWarningText_2());
-            return;
-        }
-        EmpId = IdInput.text;
+        if(!ValidateInput()) return;
+        // if (String.IsNullOrEmpty(IdInput.text))
+        // {
+        //     Debug.Log("Please enter a name");
+        //     StartCoroutine(ShowWarningText());
+        //     return;
+        // }
+        // if (IdInput.text.Length < 5)
+        // {
+        //     Debug.Log("Name is too short");
+        //     StartCoroutine(ShowWarningText_2());
+        //     return;
+        // }
+        // EmpId = IdInput.text;
         SceneManager.LoadScene("Wheel");
     }
 
     private void OnGridStartButtonClicked()
     {
-        // ValidateInput();
-        if (String.IsNullOrEmpty(IdInput.text))
-        {
-            Debug.Log("Please enter a name");
-            StartCoroutine(ShowWarningText());
-            return;
-        }
-        if (IdInput.text.Length < 5)
-        {
-            Debug.Log("Name is too short");
-            StartCoroutine(ShowWarningText_2());
-            return;
-        }
-        EmpId = IdInput.text;
+        if(!ValidateInput()) return;
+        // if (String.IsNullOrEmpty(IdInput.text))
+        // {
+        //     Debug.Log("Please enter a name");
+        //     StartCoroutine(ShowWarningText());
+        //     return;
+        // }
+        // if (IdInput.text.Length < 5)
+        // {
+        //     Debug.Log("Name is too short");
+        //     StartCoroutine(ShowWarningText_2());
+        //     return;
+        // }
+        // EmpId = IdInput.text;
         SceneManager.LoadScene("Game");
     }
 
@@ -91,20 +91,21 @@ public class GameManager : MonoBehaviour
         warningText.gameObject.SetActive(false);
     }
 
-    private void ValidateInput()
+    private bool ValidateInput()
     {
         if (String.IsNullOrEmpty(IdInput.text))
         {
             Debug.Log("Please enter a name");
             StartCoroutine(ShowWarningText());
-            return;
+            return false;
         }
         if (IdInput.text.Length < 5)
         {
             Debug.Log("Name is too short");
             StartCoroutine(ShowWarningText_2());
-            return;
+            return false;
         }
         EmpId = IdInput.text;
+        return true;
     }
 }
