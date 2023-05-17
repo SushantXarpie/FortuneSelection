@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using Random = System.Random;
 
 public class GridManager : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class GridManager : MonoBehaviour
     private GridLayoutGroup gridLayoutGroup;
 
     [SerializeField] private TextMeshProUGUI selectedText;
+
+    private Random random = new Random();
 
     private void Awake()
     {
@@ -35,10 +39,15 @@ public class GridManager : MonoBehaviour
                 int cardinal = x * columnCount + y;
                 var tile = Instantiate(tilePrefab, parent: gameObject.transform);
                 tile.name = "Tile " + cardinal;
+                TextMeshProUGUI textNumber = tile.GetComponentInChildren<TextMeshProUGUI>();
+                int randomNumber = random.Next(1, 100);
+                textNumber.text = randomNumber.ToString();
+                textNumber.GetComponent<RectTransform>().sizeDelta = new Vector2(textNumber.preferredWidth, textNumber.preferredHeight);
                 var gridTile = tile.GetComponent<GridTile>();
-                gridTile.SetId(cardinal);
+                gridTile.SetCardinal(cardinal);
+                gridTile.SetId(randomNumber);
                 gridTile.AddClickLister(OnTileSelected);
-                tile.GetComponent<Image>().color = new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
+                tile.GetComponent<Image>().color = new Color32((byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), 255);
                 tiles.Add(tile);
             }
         }
@@ -46,9 +55,9 @@ public class GridManager : MonoBehaviour
 
     private void OnTileSelected(int x)
     {
-        Debug.Log("Clicked " + tiles[x].GetComponent<GridTile>().GetId() + 1);
+        Debug.Log("Clicked " + tiles[x].GetComponent<GridTile>().GetId());
         string Name = "";
-        foreach(Emp e in DatabaseManager.Instance.empList)
+        foreach (Emp e in DatabaseManager.Instance.empList)
         {
             if (e.empId == GameManager.Instance.EmpId)
             {
@@ -56,14 +65,10 @@ public class GridManager : MonoBehaviour
                 break;
             }
         }
-        selectedText.text = $"{Name} Selected Box {tiles[x].GetComponent<GridTile>().GetId() + 1}";
+        selectedText.text = $"{Name} Selected Box {tiles[x].GetComponent<GridTile>().GetId()}";
         selectedText.gameObject.SetActive(true);
         selectedText.GetComponent<Animator>().Play("Move_Animation");
         StartCoroutine(HideSelectedText());
-        foreach (var tile in tiles)
-        {
-            tile.GetComponent<Button>().interactable = false;
-        }
     }
 
     private IEnumerator HideSelectedText()

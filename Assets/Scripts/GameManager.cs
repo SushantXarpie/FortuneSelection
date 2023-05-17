@@ -9,7 +9,7 @@ using System;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     [HideInInspector] public string EmpId;
 
@@ -41,38 +41,12 @@ public class GameManager : MonoBehaviour
     private void OnWheelStartButtonClicked()
     {
         if (!ValidateInput()) return;
-        // if (String.IsNullOrEmpty(IdInput.text))
-        // {
-        //     Debug.Log("Please enter a name");
-        //     StartCoroutine(ShowWarningText());
-        //     return;
-        // }
-        // if (IdInput.text.Length < 5)
-        // {
-        //     Debug.Log("Name is too short");
-        //     StartCoroutine(ShowWarningText_2());
-        //     return;
-        // }
-        // EmpId = IdInput.text;
         SceneManager.LoadScene("Wheel");
     }
 
     private void OnGridStartButtonClicked()
     {
         if (!ValidateInput()) return;
-        // if (String.IsNullOrEmpty(IdInput.text))
-        // {
-        //     Debug.Log("Please enter a name");
-        //     StartCoroutine(ShowWarningText());
-        //     return;
-        // }
-        // if (IdInput.text.Length < 5)
-        // {
-        //     Debug.Log("Name is too short");
-        //     StartCoroutine(ShowWarningText_2());
-        //     return;
-        // }
-        // EmpId = IdInput.text;
         SceneManager.LoadScene("Game");
     }
 
@@ -99,7 +73,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ShowWarningText());
             return false;
         }
-        if (IsValidID(IdInput.text))
+        if (!IsValidID(IdInput.text))
         {
             Debug.Log("Name is too short");
             StartCoroutine(ShowWarningText_2());
@@ -113,7 +87,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (Emp e in DatabaseManager.Instance.empList)
         {
-            if (e.empId == Id)
+            if (String.Equals(e.empId, Id, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

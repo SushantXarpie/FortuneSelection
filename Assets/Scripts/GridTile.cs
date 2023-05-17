@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 public class GridTile : MonoBehaviour
 {
     private int id;
+    private int cardinal;
 
     private UnityAction<int> onTileSelected;
     [SerializeField] private Button button;
@@ -21,9 +23,24 @@ public class GridTile : MonoBehaviour
     }
 
 
-    private void Awake()
+    public void SetCardinal(int cardinal)
+    {
+        this.cardinal = cardinal;
+    }
+
+    public int GetCardinal()
+    {
+        return this.cardinal;
+    }
+
+    private void OnEnable()
     {
         button.onClick.AddListener(OnTileSelected);
+    }
+
+    private void Start()
+    {
+        gameObject.GetComponentInChildren<TextMeshProUGUI>().gameObject.transform.position = gameObject.transform.position;
     }
 
     public void AddClickLister(UnityAction<int> onTileSelected)
@@ -33,6 +50,11 @@ public class GridTile : MonoBehaviour
 
     private void OnTileSelected()
     {
-        onTileSelected?.Invoke(id);
+        onTileSelected?.Invoke(cardinal);
+    }
+
+    private void OnDisable()
+    {
+        button.onClick.RemoveListener(OnTileSelected);
     }
 }
